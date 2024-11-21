@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-docker-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-docker-app
+  template:
+    metadata:
+      labels:
+        app: sample-docker-app
+    spec:
+      containers:
+      - name: sample-docker-app
+        image: ghcr.io/prepare-sh/sample-app-allinone:dc7b06d
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-docker-app-service
+spec:
+  selector:
+    app: sample-docker-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
